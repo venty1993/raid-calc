@@ -46,6 +46,7 @@ export default function Home() {
 // run().catch(console.dir);
 
   const tempIcon = 'w-12 h-12 block flex justify-center items-center'
+  const temp = 'w-full flex justify-center items-center bg-stone-900'
 
   return (
     
@@ -111,6 +112,24 @@ export default function Home() {
             <li className='rounded-full bg-stone-500 w-16 h-16'></li>
             <li className='rounded-full bg-stone-500 w-16 h-16 flex justify-center items-center'><AddIcon></AddIcon></li>
           </ul>
+          <div>
+            <h2>대기실</h2>
+            <ul>
+              <li>
+                <div>
+                  <div>
+                    <h3>캐릭터이름</h3>
+                    <p>레벨</p>
+                  </div>
+                  <div>
+                    <p>직업</p>
+                    <p>시너지정보</p>
+                  </div>
+                </div>
+              </li>
+              
+            </ul>
+          </div>
         </div>
 
       </section>
