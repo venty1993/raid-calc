@@ -1,6 +1,6 @@
-export default function CharList() {
+export default function CharListContents() {
     return (
-        <li className='w-96 h-56 text-white p-4 flex flex-col justify-between'>
+        <li className='w-80 h-56 text-white p-4 flex flex-col justify-between'>
             <div className='justify-between flex'>
                 <a href="" className='text-xl font-bold'>븐대장</a>
                 <button className='p-1 px-3 text-red-400 border-red-400 border-solid border'>공격대 제외</button>
