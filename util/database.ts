@@ -1,6 +1,7 @@
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://venty:Q11I2igGYt2tv0Ei@cluster0.wqunpna.mongodb.net/?retryWrites=true&w=majority";
+const db = 'raid-calc';
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -11,19 +12,16 @@ const client = new MongoClient(uri, {
   }
 });
 
-async function run() {
+async function insertDocument(collectionName: string, document: any) {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
     
-    const database = client.db('raid-calc');
-    const collection = database.collection('user');
-
-    const result = await collection.insertOne({
-      name:'븐대장',
-      age : 31,
-    })
+    const database = client.db(db);
+    const collection = database.collection(collectionName);
+    const result = await collection.insertOne(document);
+    console.log(result.insertedId);
 
 
   } finally {
@@ -31,4 +29,18 @@ async function run() {
     await client.close();
   }
 }
-run().catch(console.dir);
+
+async function findDocument(collectionName: string, query: any ={} ) {
+  try {
+    await client.connect();
+    const database = client.db(db);
+    const collection = database.collection(collectionName);
+    const documnets = await collection.find(query).toArray();
+    return documnets;
+  }
+  finally {
+    await client.close();
+  }
+}
+
+export default {insertDocument, findDocument};

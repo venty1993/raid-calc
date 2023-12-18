@@ -1,4 +1,4 @@
-
+import { redirect } from 'next/navigation'
 
 export default async function Login({
     params,
@@ -7,39 +7,22 @@ export default async function Login({
     params: {slug: string}
     searchParams: { [key:string]:string|string[]|undefined}
 }) {
-
     const { code } = searchParams
     
-
     if(code) {
+        fetch(`http://localhost:3000/api/login?code=${code}`).then(e=>e.json()).then(res=>{
+           console.log(res.isNewcomer) 
+            if(res.isNewcomer){
+                console.log("뉴비임");
+                
+                // redirect('./setting')
+            }else {
+                console.log("뉴비 아님");
 
-        const params = new URLSearchParams();
-
-            params.append('client_id', process.env.DISCORD_CLIENT_ID as string)
-            params.append('client_secret', process.env.DISCORD_CLIENT_SECRET as string)
-            params.append('grant_type', 'authorization_code',)
-            params.append('code', code as string)
-            params.append('redirect_uri', 'http://localhost:3000/login')
-            params.append('scope','identify')
-
-        const response = await fetch('https://discord.com/api/oauth2/token', {
-            method: 'POST',
-            body: params,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                // redirect('./schedule')
             }
-        });
-        
-        const responseData = await response.json();
+        })
 
-        const userResponse = await fetch('https://discordapp.com/api/users/@me', {
-            headers: {
-                authorization: `Bearer ${responseData.access_token}`
-            }
-        }).then(responseData => responseData.json())
-        .then(data => {console.log(`환영합니다 ${data.global_name}님`)})
-
-        
         
     }
 
