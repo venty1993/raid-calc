@@ -1,34 +1,43 @@
-import { redirect } from 'next/navigation'
+'use client'
 
-export default async function Login({
+import { redirect } from 'next/navigation'
+import useUserStore from 'app/store/page'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import Logo from 'app/logo'
+
+
+
+
+export default function Login({
     params,
     searchParams,
 }: {
     params: {slug: string}
     searchParams: { [key:string]:string|string[]|undefined}
 }) {
-    const { code } = searchParams
     
-    if(code) {
-        fetch(`http://localhost:3000/api/login?code=${code}`).then(e=>e.json()).then(res=>{
-           console.log(res.isNewcomer) 
-            if(res.isNewcomer){
-                console.log("뉴비임");
-                
-                // redirect('./setting')
-            }else {
-                console.log("뉴비 아님");
-
-                // redirect('./schedule')
-            }
-        })
-
-        
+    const { code } = searchParams;
+    const { id, username, avatar, global_name, setData } = useUserStore(input => input);
+    const router = useRouter();
+    
+    if(code){
+        useEffect(()=>{
+            fetch(`api/login?code=${code}`)
+            .then(res => res.json())
+            .then(getData => {
+                console.log(getData);
+                setData(getData.data)
+                getData.isNewcomer?router.push('setting'):router.push('main');
+            })    
+        },[code])   
     }
-
-    return (
-        <div>
-            {}
+        return(
+        <div className="h-screen font-['Pretendard-Regular'] bg-[#484848] flex justify-center items-center flex-col text-white gap-8">
+            <Logo></Logo>
         </div>
-        )
+    )
+    
+    
+
 }

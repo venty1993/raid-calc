@@ -1,3 +1,4 @@
+'use client'
 import Image from 'next/image'
 import CharListContents from '../CharListContents'
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
@@ -5,9 +6,12 @@ import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
 import RaidContents from '../RaidContents';
 
+import useUserStore from 'app/store/page'
+
 
 
 export default function Home() {
+  const {id,avatar,global_name,username} = useUserStore()
 
   const tempIcon = 'w-12 h-12 block flex justify-center items-center'
   const temp = 'w-full flex justify-center items-center bg-stone-900'
@@ -17,7 +21,7 @@ export default function Home() {
     <main className="h-screen font-['Pretendard-Regular']">
       <header className='h-16 p-4 bg-stone-600 flex justify-between relative items-center'>
         <a href="#" className='text-stone-900 text-2xl font-["DNFBitBitv2"]'>레이드계산기<span className='font-["Pretendard-Regular"] text-sm text-yellow-400'>beta</span></a>
-        <h1 className='text-white text-xl font-bold absolute top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2'>븐대장, 덕진마미, 황씨돌쇠, 오씨마님의 숙제 계산</h1>
+        <h1 className='text-white text-xl font-bold absolute top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2'>id: {id} 유저네임:{username}</h1>
         <ul className='flex'>
           <li><button className={tempIcon}><MenuTwoToneIcon></MenuTwoToneIcon></button></li>
           <li><button className={tempIcon}><AddIcon></AddIcon></button></li>

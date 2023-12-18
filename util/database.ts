@@ -43,4 +43,18 @@ async function findDocument(collectionName: string, query: any ={} ) {
   }
 }
 
-export default {insertDocument, findDocument};
+async function updateDocument(collectionName: string, filter: any, update: any) {
+  try {
+    await client.connect();
+    const database = client.db(db);
+    const collection = database.collection(collectionName);
+    const result = await collection.updateOne(filter, { $set: update });
+    console.log(`업데이트된 문서 수: ${result.modifiedCount}`);
+  } catch (error) {
+    console.error('문서 업데이트 중 에러:', error);
+  } finally {
+    await client.close();
+  }
+}
+
+export default {insertDocument, findDocument, updateDocument};

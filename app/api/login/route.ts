@@ -1,14 +1,10 @@
 
-import { ObjectId } from "mongodb";
-import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
-import database from '../../../util/database'
+import database from 'util/database'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
-
-  console.log("code", code);
 
   const params = new URLSearchParams();
 
@@ -37,22 +33,24 @@ export async function GET(request: Request) {
   const data = await userDataResponse.json();
   const findData = await database.findDocument("user", { 'id': data.id });
 
-  console.log(data);
-  if (findData.length > 0) {
+  const userData = {
+    id: data.id,
+    username: data.username,
+    avatar: data.avatar,
+    global_name: data.global_name,
+  }
+
+
+  if (findData.length > 0 && findData[0].role)  {
     return NextResponse.json(
-      { isNewcomer: false, id: data.id},
+      { isNewcomer: false, data: userData},
       { status: 200 }
     );
   } else {
-    const insertData = await database.insertDocument("user", {
-      id: data.id,
-      username: data.username,
-      avatar: data.avatar,
-      global_name: data.global_name,
-    });
+    const insertData = await database.insertDocument("user", userData);
     console.log(insertData);
     return NextResponse.json(
-      { isNewcomer: true },
+      { isNewcomer: true ,data: userData},
       { status: 200 }
     );
   }

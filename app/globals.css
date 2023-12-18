@@ -16,11 +16,6 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-
-}
-
 @font-face{
   font-family:'DNFBitBitv2';
   font-style:normal;font-weight:400;src:url('//cdn.df.nexon.com/img/common/font/DNFBitBitv2.otf')format('opentype')}
@@ -31,7 +26,45 @@ body {
     font-weight: 400;
     font-style: normal;
 }
+body {
+  color: rgb(var(--foreground-rgb));
+  font-family: 'Pretendard-Regular';
+
+}
+
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+.appear-contents {
+  animation-duration: 1.0s;
+  animation-name: appear;
+  animation-fill-mode: both;
+}
+
+.appear-contents:nth-child(1){
+  animation-delay: 0.5s;
+}
+.appear-contents:nth-child(2){
+  animation-delay: 2.0s;
+}
+.appear-contents:nth-child(3){
+  animation-delay: 3.5s;
+}
+
+.heading {
+  font-family: 'DNFBitBitv2';
+}
+
+@keyframes appear {
+  from{
+    transform: translateY(150px);
+    opacity: 0;
+  }
+  to{
+    transform: none;
+    opacity: 1;
+  }
+  
 }
