@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+
 
 export default async function Login({
     params,
@@ -9,6 +9,7 @@ export default async function Login({
 }) {
 
     const { code } = searchParams
+    
 
     if(code) {
 
@@ -35,9 +36,10 @@ export default async function Login({
             headers: {
                 authorization: `Bearer ${responseData.access_token}`
             }
-        })
+        }).then(responseData => responseData.json())
+        .then(data => {console.log(`환영합니다 ${data.global_name}님`)})
 
-        console.log(userResponse)
+        
         
     }
 
