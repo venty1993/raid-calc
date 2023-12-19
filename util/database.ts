@@ -42,7 +42,7 @@ async function findDocument(collectionName: string, query: any ={} ) {
     await client.close();
   }
 }
-
+/** updateDocument('user', {'id': 아이디}, {'추가할테이블':값})  */
 async function updateDocument(collectionName: string, filter: any, update: any) {
   try {
     await client.connect();

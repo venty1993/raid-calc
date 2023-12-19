@@ -1,6 +1,9 @@
 
+import { UserStore } from "@/types/types";
+import localLogin from "@/util/localLogin";
 import { NextResponse } from "next/server";
 import database from 'util/database'
+
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -33,11 +36,13 @@ export async function GET(request: Request) {
   const data = await userDataResponse.json();
   const findData = await database.findDocument("user", { 'id': data.id });
 
-  const userData = {
+  const userData:UserStore = {
     id: data.id,
     username: data.username,
     avatar: data.avatar,
     global_name: data.global_name,
+    api:null,
+    charList:[]
   }
 
 

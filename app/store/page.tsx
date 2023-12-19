@@ -1,19 +1,14 @@
+import { UserStore } from '@/types/types';
 import { create } from 'zustand'
 
 
-type UserStore = {
-    id: string;
-    username: string;
-    avatar: string;
-    global_name: string;
-    setData: (input: any) => void;
-  };
-
 const useUserStore = create<UserStore>((set) => ({
-    id: '',
-    username: '',
-    avatar: '',
-    global_name: '',
+    id: null,
+    username: null,
+    avatar: null,
+    global_name: null,
+    api:null,
+    charList:null,
     setData: (input: any) => set((state)=>({
             id: input.id,
             username: input.username,

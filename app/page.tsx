@@ -4,11 +4,50 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import { signIn } from 'next-auth/react';
 import Logo from 'app/logo'
-
-// ✅ add the use client directive for UI event handlers
+import useUserStore from './store/page';
+import { useRouter } from 'next/navigation';
+import localLogin from '../util/localLogin'
+import { useEffect } from 'react';
 
 
 export default function Home() {
+  const {avatar,global_name,id,username,setData} = useUserStore()
+  const router = useRouter()
+
+  useEffect(()=>{
+
+    
+
+    checkLocalStorage()
+    async function checkLocalStorage() {
+      try{
+        // 로컬스토리지 아이디 가져오기
+        const localID = localLogin.getUserIDFromLocalStorage();
+        // 로컬스토리지에 아이디가 있으면?
+        if(localID){
+          // 로컬스토리지 ID로 데이터베이스 조회
+          const res = await fetch(`api/checkUserInfo?id=${localID}`)
+          const resData = await res.json();
+          if(setData!== undefined){
+            setData(resData.data)
+          }
+          if(resData.checkInfo==='role'){
+            router.push('setting/role')
+          }else if(resData.checkInfo==='api'){
+            router.push('setting/getAPI')
+          }else if(resData.checkInfo==='character'){
+            router.push('setting/character')
+          }
+        }
+      } catch(error) {
+        console.log(error);
+      }
+      
+      
+    }
+  },[])
+  
+
   return (
     <main className="h-screen font-['Pretendard-Regular'] bg-[#484848] flex justify-center items-center">
       <div className='flex items-center flex-col'>

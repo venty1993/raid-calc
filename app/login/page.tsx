@@ -5,6 +5,7 @@ import useUserStore from 'app/store/page'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Logo from 'app/logo'
+import localLogin from '@/util/localLogin'
 
 
 
@@ -27,7 +28,13 @@ export default function Login({
             .then(res => res.json())
             .then(getData => {
                 console.log(getData);
-                setData(getData.data)
+                localLogin.saveUserIDToLocalStorage(getData.data.id)
+                console.log(localLogin.getUserIDFromLocalStorage())
+
+                if(setData!==undefined){
+                    setData(getData.data)
+                }
+                
                 getData.isNewcomer?router.push('setting'):router.push('main');
             })    
         },[code])   
@@ -35,6 +42,8 @@ export default function Login({
         return(
         <div className="h-screen font-['Pretendard-Regular'] bg-[#484848] flex justify-center items-center flex-col text-white gap-8">
             <Logo></Logo>
+            <div className='animate-spin h-10 w-10 border-4 border-[#FFFFFF80] rounded-full border-t-white'></div>
+            <p className='heading'>로그인중...</p>
         </div>
     )
     
