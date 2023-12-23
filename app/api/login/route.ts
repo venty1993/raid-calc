@@ -1,6 +1,5 @@
 
-import { UserStore } from "@/types/types";
-import localLogin from "@/util/localLogin";
+import { UserStore, userDataInterface } from "@/types/types";
 import { NextResponse } from "next/server";
 import database from 'util/database'
 
@@ -36,7 +35,7 @@ export async function GET(request: Request) {
   const data = await userDataResponse.json();
   const findData = await database.findDocument("user", { 'id': data.id });
 
-  const userData:UserStore = {
+  const userData:userDataInterface = {
     id: data.id,
     username: data.username,
     avatar: data.avatar,

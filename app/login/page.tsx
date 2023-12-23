@@ -1,11 +1,11 @@
 'use client'
 
 import { redirect } from 'next/navigation'
-import useUserStore from 'app/store/page'
+import {useUserStore} from '@/util/loginState'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Logo from 'app/logo'
-import localLogin from '@/util/localLogin'
+
 
 
 
@@ -22,8 +22,8 @@ export default function Login({
     const { id, username, avatar, global_name, setData } = useUserStore(input => input);
     const router = useRouter();
     
+    useEffect(()=>{
     if(code){
-        useEffect(()=>{
             fetch(`api/login?code=${code}`)
             .then(res => res.json())
             .then(getData => {
@@ -34,11 +34,11 @@ export default function Login({
                 if(setData!==undefined){
                     setData(getData.data)
                 }
-                
+
                 getData.isNewcomer?router.push('setting'):router.push('main');
             })    
-        },[code])   
-    }
+        }
+    },[code])   
         return(
         <div className="h-screen font-['Pretendard-Regular'] bg-[#484848] flex justify-center items-center flex-col text-white gap-8">
             <Logo></Logo>

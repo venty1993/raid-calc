@@ -1,6 +1,6 @@
 'use client'
 import Logo from "@/app/logo"
-import useUserStore from "@/app/store/page"
+import {useUserStore} from '@/util/loginState'
 import { useRouter } from "next/navigation"
 import { useEffect, useRef } from "react"
 
@@ -42,7 +42,7 @@ export default function GetAPI() {
                 </li>
                 <li className="flex flex-col items-center gap-8 text-xl w-[360px]">
                     <p>2</p>
-                    <p>"Get Access To Lostark API" <br/>를 클릭해 STOVE 계정으로 로그인</p>
+                    <p>Get Access To Lostark API <br/>를 클릭해 STOVE 계정으로 로그인</p>
                 </li>
                 <li className="flex flex-col items-center gap-8 text-xl w-[360px]">
                     <p>3</p>

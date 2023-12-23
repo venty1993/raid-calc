@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import database from "../../../util/database"
 import { redirect } from "next/navigation";
-import { UserStore } from "@/types/types";
+import { UserStore, userDataInterface } from "@/types/types";
+import { UserData } from "next-auth/providers/42-school";
 
 export async function GET(request:Request) {
     let status = 'problem';
@@ -17,7 +18,7 @@ export async function GET(request:Request) {
         }
         
         if(user[0]){
-            const userData:UserStore = {
+            const userData:userDataInterface = {
                 id: user[0].id,
                 username: user[0].username,
                 avatar: user[0].avatar,

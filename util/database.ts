@@ -36,6 +36,7 @@ async function findDocument(collectionName: string, query: any ={} ) {
     const database = client.db(db);
     const collection = database.collection(collectionName);
     const documnets = await collection.find(query).toArray();
+    console.log(documnets);
     return documnets;
   }
   finally {

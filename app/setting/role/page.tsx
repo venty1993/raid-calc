@@ -4,7 +4,7 @@ import Logo from 'app/logo'
 import GroupsIcon from '@mui/icons-material/Groups';
 import CastleIcon from '@mui/icons-material/Castle';
 import database from '@/util/database';
-import useUserStore from '@/app/store/page';
+import {useUserStore} from '@/util/loginState';
 import { useRouter } from 'next/navigation';
 
 export default function Role() {
