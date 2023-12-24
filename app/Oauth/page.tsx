@@ -1,7 +1,7 @@
 'use client'
 
 import { redirect } from 'next/navigation'
-import {useUserStore} from '@/util/loginState'
+import { useUserStore } from '@/util/loginState'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Logo from 'app/logo'
@@ -19,24 +19,35 @@ export default function Login({
 }) {
     
     const { code } = searchParams;
-    const { id, username, avatar, global_name, setData } = useUserStore(input => input);
+    const { setData } = useUserStore(input => input);
     const router = useRouter();
     
     useEffect(()=>{
     if(code){
-            fetch(`api/login?code=${code}`)
-            .then(res => res.json())
-            .then(getData => {
-                console.log(getData);
-                localLogin.saveUserIDToLocalStorage(getData.data.id)
-                console.log(localLogin.getUserIDFromLocalStorage())
+            fetch(`api/login`, {
+                method: 'post',
+                body: JSON.stringify({
+                    code : code
+                })
+            })
+            // .then(res => res.json())
+            // .then(getToken => {
+            //     console.log(getToken);
 
-                if(setData!==undefined){
-                    setData(getData.data)
-                }
 
-                getData.isNewcomer?router.push('setting'):router.push('main');
-            })    
+                // setData
+                // localLogin.saveUserIDToLocalStorage(getData.data.id)
+                // console.log(localLogin.getUserIDFromLocalStorage())
+
+                // if(setData!==undefined){
+                //     setData(getData.data)
+                // }
+
+            
+
+                // getData.isNewcomer?router.push('setting'):router.push('main');
+            // })    
+
         }
     },[code])   
         return(

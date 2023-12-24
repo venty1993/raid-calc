@@ -2,11 +2,13 @@
 import { UserStore, userDataInterface } from "@/types/types";
 import { NextResponse } from "next/server";
 import database from 'util/database'
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers'
 
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const code = searchParams.get("code");
+export async function POST(request: Request) {
+  const resBody = await request.json();
+  const code = resBody.code;
 
   const params = new URLSearchParams();
 
@@ -14,7 +16,7 @@ export async function GET(request: Request) {
   params.append("client_secret", process.env.DISCORD_CLIENT_SECRET as string);
   params.append("grant_type", "authorization_code");
   params.append("code", code as string);
-  params.append("redirect_uri", "http://localhost:3000/login");
+  params.append("redirect_uri", "http://localhost:3000/Oauth");
   params.append("scope", "identify");
 
   //액세스 토큰 요청
@@ -27,35 +29,35 @@ export async function GET(request: Request) {
   });
 
   const responseData = await response.json(); // 액세스토큰 json화
+
+
   const userDataResponse = await fetch("https://discordapp.com/api/users/@me", {
     headers: {
       authorization: `Bearer ${responseData.access_token}`,
     },
   });
   const data = await userDataResponse.json();
-  const findData = await database.findDocument("user", { 'id': data.id });
 
-  const userData:userDataInterface = {
-    id: data.id,
-    username: data.username,
-    avatar: data.avatar,
-    global_name: data.global_name,
-    api:null,
-    charList:[]
+  console.log(data)
+
+  const findData = await database.findDocument('user',{'id' : data.id})
+
+  if(!findData[0]){
+    // DB에 등록된 정보가 없는 상황
+    database.insertDocument('user', {
+      'id' : data.id,
+      'username' : data.username,
+      'avatar' : data.avatar,
+      'global_name' : data.global_name
+    })
   }
+  
+  const sevneDay = 7*24*60*60;
+  const token = jwt.sign({id : data.id}, process.env.JWT_SERVER_TOKEN as string , {expiresIn: sevneDay})
+  cookies().set('jwt_token',token, {expires : Date.now() + sevneDay * 1000});
 
-
-  if (findData.length > 0 && findData[0].role)  {
-    return NextResponse.json(
-      { isNewcomer: false, data: userData},
-      { status: 200 }
-    );
-  } else {
-    const insertData = await database.insertDocument("user", userData);
-    console.log(insertData);
-    return NextResponse.json(
-      { isNewcomer: true ,data: userData},
-      { status: 200 }
-    );
-  }
+  return NextResponse.json(
+    {token : token},
+    {status : 200}
+  )
 }

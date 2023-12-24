@@ -20,7 +20,7 @@ export interface UserStore {
     global_name: string|null;
     api: string|null;
     charList: Character[]|null;
-    setData?: (input: userDataInterface) => void | undefined;
+    setData?: (input: userDataInterface) => void;
     setID? : (inputID: string) => void;
   };
 
