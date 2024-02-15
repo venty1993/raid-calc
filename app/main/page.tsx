@@ -1,10 +1,10 @@
 'use client'
 import Image from 'next/image'
-import CharListContents from '../CharListContents'
+import CharListContents from './CharListContents'
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
-import RaidContents from '../RaidContents';
+import RaidContents from './RaidContents';
 
 import {useUserStore} from '@/util/loginState'
 

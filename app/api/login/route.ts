@@ -1,12 +1,10 @@
-
-import { UserStore, userDataInterface } from "@/types/types";
 import { NextResponse } from "next/server";
 import database from 'util/database'
-import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers'
+import { signJWT } from "@/util/token";
 
 
-export async function POST(request: Request) {
+export async function POST(request: Request, res:Response) {
   const resBody = await request.json();
   const code = resBody.code;
 
@@ -16,7 +14,7 @@ export async function POST(request: Request) {
   params.append("client_secret", process.env.DISCORD_CLIENT_SECRET as string);
   params.append("grant_type", "authorization_code");
   params.append("code", code as string);
-  params.append("redirect_uri", "http://localhost:3000/Oauth");
+  params.append("redirect_uri", "http://localhost:3000/login/Oauth");
   params.append("scope", "identify");
 
   //액세스 토큰 요청
@@ -38,12 +36,11 @@ export async function POST(request: Request) {
   });
   const data = await userDataResponse.json();
 
-  console.log(data)
 
   const findData = await database.findDocument('user',{'id' : data.id})
 
+  // DB에 등록된 정보가 없는 경우 DISCORD로부터 받은 데이터를 DB에 저장한다.
   if(!findData[0]){
-    // DB에 등록된 정보가 없는 상황
     database.insertDocument('user', {
       'id' : data.id,
       'username' : data.username,
@@ -52,9 +49,13 @@ export async function POST(request: Request) {
     })
   }
   
-  const sevneDay = 7*24*60*60;
-  const token = jwt.sign({id : data.id}, process.env.JWT_SERVER_TOKEN as string , {expiresIn: sevneDay})
-  cookies().set('jwt_token',token, {expires : Date.now() + sevneDay * 1000});
+
+  const token = await signJWT({id: data.id})
+  cookies().set('jwt_access_token',token.jwtAccessToken, {expires : token.accessExp*1000});
+  cookies().set('jwt_refresh_token',token.jwtRefreshToken, {expires : token.refreshExp*1000});
+  // res.setHeader('Set-Cookie',token);
+
+  database.updateDocument('user', {'id' : data.id}, {'refresh_token' : token.jwtRefreshToken})
 
   return NextResponse.json(
     {token : token},

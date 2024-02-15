@@ -1,6 +1,5 @@
 import { userDataInterface } from "@/types/types";
 import database from "@/util/database";
-import { useRouter } from "next/navigation";
 import { NextResponse } from "next/server";
 
 

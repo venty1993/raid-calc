@@ -23,44 +23,7 @@ export default function RootLayout({
 }) {
 
   
-  const checkLogin = async () => {
-    try {
-        // const localId = JSON.parse(localStorage.hi)
-  
-        console.log(window.localStorage)
-        // const res = await fetch('api/checkAndLogin',{
-        //   method:'POST',
-        //   body : JSON.stringify({
-        //     'id' : id
-        //   })
-        // })
-        // const resData = await res.json()
-        // const params: userDataInterface = {
-        //   id: resData.id,
-        //   api: resData.api,
-        //   avatar: resData.avatar,
-        //   charList: resData.charList,
-        //   global_name: resData.global_name,
-        //   username: resData.username
-  
-        // }
-        // if(!setData)
-        //   throw new Error('setData가 정의되지 않았다.')
-  
-        // setData(params);
-  
-        // if(!id){
-          
-        // }
-          
-        
-  
-      }catch(error) {
-  
-      }
-      
-    }
-    checkLogin();
+ 
 
 
   return (

@@ -24,11 +24,15 @@ export default function Login({
     
     useEffect(()=>{
     if(code){
-            fetch(`api/login`, {
+            fetch(`/api/login`, {
                 method: 'post',
                 body: JSON.stringify({
                     code : code
                 })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
             })
             // .then(res => res.json())
             // .then(getToken => {
